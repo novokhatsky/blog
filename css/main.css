@@ -1,0 +1,64 @@
+.main_back {
+    background-color: #F0F0F0;
+}
+
+a {
+    text-decoration: none;
+}
+a:active {
+    color: red;
+}
+
+.container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.element {
+    width: 30%;
+    height: 14rem;
+    text-align: left;
+    margin: 3rem 1rem;
+    padding: 1rem;
+    font: bold 1rem/1rem Verdana, sans-serif;
+    text-decoration: none;
+}
+
+.brd {
+    border: 1px solid grey;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+    box-sizing: border-box;
+    background-color: #CCC;
+}
+
+.day {
+    text-decoration: underline;
+    font: bold 1.5rem Verdana, sans-serif;
+    text-align: center;
+}
+
+.title {
+    margin: 0 auto;
+    width: 70%;
+    font: bold 2.5rem/5.5rem Verdana, sans-serif;
+    text-align: center;
+    height: 6rem;
+}
+
+.level {
+    color: red; 
+    font: bold 2.5rem/2.5rem Verdana, sans-serif;
+}
+
+.el_menu {
+    height: 4rem;
+    font: bold 2rem/4rem Verdana, sans-serif;
+    border: 1px solid grey;
+    border-radius: 10px;
+    width: 20rem;
+    text-align: center;
+    background-color: #CCC;
+}
+
