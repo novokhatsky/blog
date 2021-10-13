@@ -44,7 +44,7 @@ Class Blog
         if ($id_article != -1) {
             $error = false;
 
-            if (!$this->addKey($id_article, $post['keywords'])) {
+            if (!$this->addKey($id_article, $this->keywords)) {
                 $error = true;
             }
         } else {
