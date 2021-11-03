@@ -2,25 +2,25 @@
 
 namespace blog\models;
 
+use \blog\module\Convert;
+use \blog\module\CryptoLib;
+
 Class Blog
 {
-    use \blog\module\CryptoLib;
-    use \blog\module\Convert;
+    use CryptoLib;
+    use Convert;
 
     private $db;
-    private $header = '';
-    private $article = '';
-    private $keywords = [];
 
     function __construct($db)
     {
         $this->db = $db;
     }
 
-    function addPost($post)
+    function addPost($post): bool
     {
-        $this->header = $post['header'];
-        $this->article = $this->encrypt(
+        $header = $post['header'];
+        $article = $this->encrypt(
                             $post['key'],
                             $this->html2text(
                                 nl2br(
@@ -28,38 +28,38 @@ Class Blog
                                 )
                             )
         );
-        $this->keywords = $post['keywords'];
+        $keywords = $post['keywords'];
 
         $this->db->beginTransaction();
+        try {
+            # вставляем статью, получаем id, вставляем ключевые поля
+            $query = 'insert into articles (header, article) values (:header, :article)';
+            $id_article = $this
+                ->db
+                ->insertData($query, [
+                    'header' => $header,
+                    'article' => $article,
+                ]);
 
-        # вставляем статью, получаем id, вставляем ключевые поля
-        $query = 'insert into articles (header, article) values (:header, :article)';
-        $id_article = $this
-            ->db
-            ->insertData($query, [
-                'header'    => $this->header,
-                'article'   => $this->article,
-            ]);
-
-        if ($id_article != -1) {
-            $error = false;
-
-            if (!$this->addKey($id_article, $this->keywords)) {
-                $error = true;
+            if ($id_article === -1) {
+                throw new \Exception('Ошибка вставки записи в блог');
             }
-        } else {
-            $error = true;
-        }
 
-        if ($error) {
+            if (!$this->addKey($id_article, $keywords)) {
+                throw new \Exception('Ошибка добавления ключевых слов');
+            }
+        } catch (\Exception $e) {
             $this->db->rollBack();
-
-            return false;
+            return 0;
         }
 
         $this->db->commit();
-
         return $id_article;
+    }
+
+    public function addKey($id_article, $keywords): bool
+    {
+        return false;
     }
 }
 
