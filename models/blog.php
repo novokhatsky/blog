@@ -59,7 +59,7 @@ Class Blog
 
     public function addKey($id_article, $keywords): bool
     {
-        return false;
+        return true;
     }
 }
 
